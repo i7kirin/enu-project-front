@@ -1,0 +1,11 @@
+body{
+    margin: 0;
+    padding: 0;
+    background: #e7faf4;
+}
+.el-container{
+    border: none!important;
+}
+.el-menu{
+    border: none;
+}
