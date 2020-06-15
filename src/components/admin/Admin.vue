@@ -28,6 +28,22 @@
                 </el-col>
             </el-row>
             <el-divider></el-divider>
+            <el-row :gutter="20">
+                <el-col :span="8">
+                    <label for="professionType">Тип профессии</label>
+                    <el-input id="professionType" v-model="professionTypeForm.type"></el-input>
+                </el-col>
+                <el-col :span="16">
+                    <label for="profTypeDesc">Описание</label>
+                    <el-input type="textarea" :rows="4" id="profTypeDesc" v-model="professionTypeForm.description"></el-input>
+                </el-col>
+                <el-col :span="24">
+                    <div class="btn-wrp">
+                        <el-button @click="addProfessionType" type="primary">Добавить</el-button>
+                    </div>
+                </el-col>
+            </el-row>
+            <el-divider></el-divider>
             <h4>Добавление информации о городе</h4>
             <el-row :gutter="20">
                 <el-col :span="8">
@@ -76,6 +92,14 @@
                     </div>
                 </el-col>
                 <el-col :span="8">
+                    <div class="select-wrp">
+                        <label for="year">Тип профессии</label>
+                        <el-select v-model="profession.professionType" value-key="id">
+                            <el-option v-for="item in professionType" :label="item.type" :value="item"></el-option>
+                        </el-select>
+                    </div>
+                </el-col>
+                <el-col :span="8">
                     <label for="profession">Профессия</label>
                     <el-input id="profession" v-model="profession.name"></el-input>
                 </el-col>
@@ -91,75 +115,17 @@
                     <label for="employerCount">Количество работодателей</label>
                     <el-input type="number" id="employerCount" v-model="profession.employerCount"></el-input>
                 </el-col>
+                <el-col :span="8">
+                    <label for="unemployedCount">Количество безработных</label>
+                    <el-input type="number" id="unemployedCount" v-model="profession.unemployedCount"></el-input>
+                </el-col>
+                <el-col :span="8">
+                    <label for="age">Возраст</label>
+                    <el-input type="number" id="age" v-model="profession.age"></el-input>
+                </el-col>
                 <el-col :span="24">
                     <div class="btn-wrp">
                         <el-button @click="addProfession" type="primary">Добавить</el-button>
-                    </div>
-                </el-col>
-            </el-row>
-            <el-divider></el-divider>
-            <h4>Добавление информации о городе(работники)</h4>
-            <el-row :gutter="20">
-                <el-col :span="6">
-                    <div class="select-wrp">
-                        <label for="year">Город</label>
-                        <el-select v-model="cityId" @change="getInfos">
-                            <el-option v-for="item in cities" :label="item.name" :value="item.id"></el-option>
-                        </el-select>
-                    </div>
-                </el-col>
-                <el-col :span="6">
-                    <div class="select-wrp">
-                        <label for="year">Год</label>
-                        <el-select v-model="year" value-key="id">
-                            <el-option v-for="item in cityInformation" :label="item.year" :value="item.year"></el-option>
-                        </el-select>
-                    </div>
-                </el-col>
-                <el-col :span="6">
-                    <label for="employedCount">Количество работников</label>
-                    <el-input type="number" id="employedCount" v-model="employed.count"></el-input>
-                </el-col>
-                <el-col :span="6">
-                    <label for="employedAge">Возраст</label>
-                    <el-input type="number" id="employedAge" v-model="employed.age"></el-input>
-                </el-col>
-                <el-col :span="24">
-                    <div class="btn-wrp">
-                        <el-button @click="addEmployed" type="primary">Добавить</el-button>
-                    </div>
-                </el-col>
-            </el-row>
-            <el-divider></el-divider>
-            <h4>Добавление информации о городе(безработные)</h4>
-            <el-row :gutter="20">
-                <el-col :span="6">
-                    <div class="select-wrp">
-                        <label for="year">Город</label>
-                        <el-select v-model="cityId" @change="getInfos">
-                            <el-option v-for="item in cities" :label="item.name" :value="item.id"></el-option>
-                        </el-select>
-                    </div>
-                </el-col>
-                <el-col :span="6">
-                    <div class="select-wrp">
-                        <label for="year">Год</label>
-                        <el-select v-model="year" value-key="id">
-                            <el-option v-for="item in cityInformation" :label="item.year" :value="item.year"></el-option>
-                        </el-select>
-                    </div>
-                </el-col>
-                <el-col :span="6">
-                    <label for="unemployedCount">Количество безработных</label>
-                    <el-input type="number" id="unemployedCount" v-model="unemployed.count"></el-input>
-                </el-col>
-                <el-col :span="6">
-                    <label for="unemployedAge">Возраст</label>
-                    <el-input type="number" id="unemployedAge" v-model="unemployed.age"></el-input>
-                </el-col>
-                <el-col :span="24">
-                    <div class="btn-wrp">
-                        <el-button @click="addUnemployed" type="primary">Добавить</el-button>
                     </div>
                 </el-col>
             </el-row>
@@ -190,15 +156,15 @@
           name: null,
           salary: null,
           employeeCount: null,
-          employerCount: null
-        },
-        employed:{
+          unemployedCount: null,
           age: null,
-          count: null
+          employerCount: null,
+          professionType: null
         },
-        unemployed:{
-          age: null,
-          count: null
+        professionType: null,
+        professionTypeForm: {
+          type: null,
+          description: null
         },
         cities: null,
         cityId: null,
@@ -212,8 +178,11 @@
     methods: {
       async fetchData() {
         let res = await axios.get('/api/statistics/city/all');
+        let professionTypeResponse = await axios.get(`/api/statistics/profession-type`)
         if (!res.error)
           this.cities = res.data;
+        if(!professionTypeResponse.error)
+          this.professionType = professionTypeResponse.data;
       },
       async addCity() {
         let res = await axios.post("/api/statistics/city", this.cityForm);
@@ -235,26 +204,16 @@
         this.cityId = null;
         this.year = null;
       },
-      async addEmployed(){
-        let res = await axios.put(`/api/statistics/employed/${this.cityId}/${this.year}`, this.employed);
-        if (!res.error)
-          await this.fetchData();
-        this.resetForm(this.employed);
-        this.cityId = null;
-        this.year = null;
-      },
-      async addUnemployed(){
-        let res = await axios.put(`/api/statistics/unemployed/${this.cityId}/${this.year}`, this.unemployed);
-        if (!res.error)
-          await this.fetchData();
-        this.resetForm(this.unemployed);
-        this.cityId = null;
-        this.year = null;
-      },
       async getInfos(){
         let res = await axios.get(`/api/statistics/information/${this.cityId}`);
         if (!res.error)
           this.cityInformation = res.data;
+      },
+      async addProfessionType(){
+        let res = await axios.post(`/api/statistics/profession-type`, this.professionTypeForm)
+        if (!res.error)
+          await this.fetchData();
+        this.resetForm(this.professionTypeForm);
       },
       resetForm(form) {
         Object.getOwnPropertyNames(form).forEach(prop => {

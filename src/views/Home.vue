@@ -6,11 +6,13 @@
                 <el-col :span="18">
                     <div class="header-wrapper">
                         <div class="header-block">
-                            <el-button @click="changeRoute('/enbek_narygy')" size="small" type="primary" icon="el-icon-s-home">
+                            <el-button @click="changeRoute('/enbek_narygy')" size="small" type="primary"
+                                       icon="el-icon-s-home">
                             </el-button>
                             <el-button @click="changeRoute('/statistics')" size="small">Статистика</el-button>
-                            <el-button @click="changeRoute('/home')" size="small">Сұранысқа ие мамандықтар</el-button>
-                            <el-button @click="changeRoute('/choose-profession')" size="small">Мамандық таңдау</el-button>
+                            <el-button @click="changeRoute('/popular-professions')" size="small">Сұранысқа ие мамандықтар</el-button>
+                            <el-button @click="changeRoute('/choose-profession')" size="small">Мамандық таңдау
+                            </el-button>
                         </div>
                         <div class="map">
                             <router-view></router-view>
@@ -20,19 +22,28 @@
                 <el-col :span="6">
                     <div class="right-block">
                         <div class="right-menu">
-                            Қосымша ақпарат
+                            <a target="_blank" rel="noopener noreferrer"
+                               href="https://stat.gov.kz/about/general/regulation">
+                                Қосымша ақпарат
+                            </a>
                         </div>
                         <div class="right-menu">
-                            Хабарландырулар
+                            <a target="_blank" rel="noopener noreferrer"
+                               href="https://stat.gov.kz/official/economic_quality">
+                                Сапа бойынша есептер
+                            </a>
                         </div>
                         <div class="right-menu">
-                            Пайдалы сілтемелер
+                            <a target="_blank" rel="noopener noreferrer"
+                               href="https://stat.gov.kz/respondent/for_respondents">
+                                Респонденттерге
+                            </a>
                         </div>
                         <div class="right-menu">
-                            Қызықты ақпарат
-                        </div>
-                        <div class="right-menu">
-                            Актуалды вакансиялар
+                            <a target="_blank" rel="noopener noreferrer"
+                               href="https://hh.kz/search/vacancy?area=159&st=searchVacancy&text=Java&fromSearch=true">
+                                Актуалды вакансиялар
+                            </a>
                         </div>
                     </div>
                 </el-col>
@@ -48,36 +59,37 @@
 </template>
 
 <script>
-    import axios from 'axios';
-    export default {
-        name: "Home",
-        data() {
-            return {
-                showMap: true,
-                center: { lat: 45.508, lng: -73.587 },
-                markers: [],
-                places: [],
-                currentPlace: null
-            }
-        },
-        mounted() {
-            this.geolocate();
-        },
-        methods: {
-            changeRoute(path) {
-                this.showMap = path === '/enbek_narygy';
-                this.$router.push(path);
-            },
-            geolocate() {
-                navigator.geolocation.getCurrentPosition(position => {
-                    this.center = {
-                        lat: position.coords.latitude,
-                        lng: position.coords.longitude
-                    };
-                });
-            }
-        }
+  import axios from 'axios';
+
+  export default {
+    name: "Home",
+    data() {
+      return {
+        showMap: true,
+        center: {lat: 45.508, lng: -73.587},
+        markers: [],
+        places: [],
+        currentPlace: null
+      }
+    },
+    mounted() {
+      this.geolocate();
+    },
+    methods: {
+      changeRoute(path) {
+        this.showMap = path === '/enbek_narygy';
+        this.$router.push(path);
+      },
+      geolocate() {
+        navigator.geolocation.getCurrentPosition(position => {
+          this.center = {
+            lat: position.coords.latitude,
+            lng: position.coords.longitude
+          };
+        });
+      }
     }
+  }
 </script>
 
 <style scoped>
@@ -89,10 +101,12 @@
         color: #2c3e50;
         background-color: rgba(241, 246, 250, 0.25);
     }
-    h4{
+
+    h4 {
         margin-top: 0;
         margin-bottom: 50px;
     }
+
     .body {
         width: 1000px;
         margin: auto;
@@ -123,7 +137,8 @@
         padding: 20px;
         border: 1px solid grey;
     }
-    .right-menu{
+
+    .right-menu {
         padding: 5px 10px;
         text-align: start;
         cursor: pointer;

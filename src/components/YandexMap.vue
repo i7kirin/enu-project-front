@@ -6,10 +6,11 @@
                     zoom=4
             >
                 <ymap-marker
-                        :coords="coords"
-                        marker-id="123123"
+                        v-for="(item, index) in infos"
+                        :coords="item.coords"
+                        :marker-id="index"
                         marker-type="placemark"
-                        :balloon="{body: 'body'}"
+                        :balloon="item.body"
                 />
             </yandex-map>
         </div>
@@ -26,20 +27,29 @@
 
 <script>
     import { yandexMap, ymapMarker } from 'vue-yandex-maps'
+    import axios from "axios";
     export default {
         name: "YandexMap",
         components: { yandexMap, ymapMarker },
         data() {
             return {
               coords: [51.1796, 71.4475],
+              infos: []
             };
         },
 
-        mounted() {
+        async created() {
+          await this.fetchData();
         },
 
         methods: {
-
+            async fetchData(){
+              let response = await axios.get(`/api/statistics/general-info/2020`)
+              if (!response.error)
+                response.data.forEach(d => {
+                  this.infos.push({coords:[d.id.latitude, d.id.longitude], body:{ footer: d.id.name + '-'+ d.value.employee}})
+                })
+            }
         }
     };
 </script>

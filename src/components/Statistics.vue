@@ -3,15 +3,14 @@
         <div class="statistics">
             <h3>Статистика</h3>
             <ul>
-                <li @click="goChart('1')">Еңбек нарығындағы жағдай туралы</li>
-                <li @click="goChart('')">Орташа айлық жайлы</li>
-                <li @click="goChart('')">Жұмыспен қамту және жұмыссыздық</li>
-                <li @click="goChart('')">Жұмыссыздық деңгейі(өңірлер бойынша)</li>
-                <li @click="goChart('')">Жастар арасындағы жұмыссыздық</li>
-                <li @click="goChart('')">Жалдамалы қызметкерлердің жалақысы</li>
-                <li @click="goChart('')">IT мамандардың жұмыспен қамтылуы</li>
-                <li @click="goChart('')">IT мамандарының жалақысы</li>
-                <li @click="goChart('')">IT саласындағы мамандықтардың сұранысы</li>
+                <li @click="$router.push({path : '/general'})">Еңбек нарығындағы жағдай туралы</li>
+                <li @click="$router.push({path : '/avg-salary'})">Орташа айлық жайлы</li>
+                <li @click="$router.push({path : '/employment'})">Жұмыспен қамту және жұмыссыздық</li>
+                <li @click="$router.push({path : '/young-employment'})">Жастар арасындағы жұмыссыздық</li>
+                <li @click="$router.push({path : '/profession-type-salary'})">IT мамандарының жалақысы</li>
+                <li @click="$router.push({path : '/it-employment'})">IT мамандардың жұмыспен қамтылуы</li>
+                <li @click="$router.push({path : '/profession-type-salary'})">Жалдамалы қызметкерлердің жалақысы</li>
+<!--                <li @click="$router.push({path : '/chart'})">IT саласындағы мамандықтардың сұранысы</li>-->
             </ul>
         </div>
     </div>
@@ -22,7 +21,7 @@
         name: "Statistics",
         methods:{
             goChart(data){
-                this.$router.push({path : '/chart', query: {info:data}})
+                this.$router.push({path : '/chart'})
             }
         }
     }

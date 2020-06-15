@@ -5,8 +5,9 @@ import router from "./router";
 import YmapPlugin from 'vue-yandex-maps'
 import './assets/css/main.css'
 import VueGoogleCharts from 'vue-google-charts'
+import ApexChart from 'vue-apexcharts'
 
-Vue.use(VueGoogleCharts);
+Vue.use(VueGoogleCharts, ApexChart);
 Vue.use(YmapPlugin, {
     apiKey: '70a5ef5a-bf75-4dab-bc93-2556dca96051',
     lang: 'ru_RU',
